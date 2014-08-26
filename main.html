@@ -11,11 +11,10 @@
         <link rel="stylesheet" type="text/css" href="css/mschedule.css" />
         <link rel="stylesheet" href="lib/onsen/css/onsen-css-components.css">
     	<link rel="stylesheet" href="lib/onsen/css/onsenui.css">
-        
-         <script type="text/javascript" src="js/index.js"></script>
-         <script src="js/jquery-1.7.1.min.js"></script>
     </head>
-    <body>  
+    
+    <body>
+        <script type="text/javascript" src="js/index.js"></script>
         <div>
             <div class="navigation-bar">
                <div class="navigation-bar__left"></div>
@@ -30,8 +29,7 @@
                   <img src="img/logo.png" />
                 </div>
                 <div class="formarea">
-                	<!--- start form login-->
-           			<form id="fLogin" method="post">                    
+           			<form id="fLogin">                    
                         <div class="margin-little">
                             <input type="text" id="txtUserName" name="txtUserName" class="text-input--underbar width-full" placeholder="User Name" value="">
                         </div>
@@ -39,9 +37,11 @@
                             <input type="password" id="txtPassword" name="txtPassword" class="text-input--underbar width-full" placeholder="Password" value="">
                         </div>
                         <div class="vspc margin-little">
-                            <button type="submit" class="button login-button">Login</button>
+                            <button id="btLogin" class="button login-button">Login</button>
                         </div>
                     </form>
+                    
+                    
                    	<div class="vspc margin-little">
                     	<button class="button--quiet forgot-password">Forgot Password? </button>
                     </div>
@@ -50,12 +50,7 @@
                     </div>
                 </div>
         </div>
-
-		<!--- load page Icon here --->
- 		<div id="loadPage"  style="display:none; top: 50%;position: fixed;left: 50%;">
-      		<span><i class="fa fa-spinner fa-spin" style="font-size:30px;"></i></span>
-   		</div>
-        
+         <script src="js/jquery-1.7.1.min.js"></script>
         <script src="js/controllers.js"></script>
     </body>
 </html>
