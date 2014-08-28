@@ -4,8 +4,7 @@
   <head>
   <title>My App</title>  
    <link rel="stylesheet" href="lib/onsen/css/onsenui.css">  
-  <link rel="stylesheet" href="lib/onsen/css/onsen-css-components.css">  
-  <link rel="stylesheet" href="styles/app.css"/>
+  <link rel="stylesheet" href="lib/onsen/css/onsen-css-components.css"> 
   <link rel="stylesheet" href="css/grid_menu.css"/>
   <link rel="stylesheet" href="css/mschedule.css" />
   <link rel="stylesheet" href="css/task.css">
@@ -27,29 +26,80 @@
     </div>
     
     <div class="formarea">
-        <form id="fSignUp" method="post">
+        <form id="fCreateTask" method="post">
         	<div class="margin-little">
             <span class="lucent"><i class="fa fa-clock-o"></i>&nbsp; Name of Task:</span>
-            	<input type="text" required class="text-input--underbar width-full" placeholder="" value="" name="txtFirstName" id="txtFirstName">
+            	<input type="text" required class="text-input--underbar width-full" placeholder="" value="" name="txtTaskName" id="txtTaskName">
             </div>
             <div class="margin-little">
             <span class="lucent"><i class="fa fa-clock-o"></i>&nbsp; Location:</span>
-               <input type="text" class="text-input--underbar width-full" placeholder="" value="" name="txtLastName" id="txtLastName">
+               <input type="text" class="text-input--underbar width-full" placeholder="" value="" name="txtTaskLocation" id="txtTaskLocation">
             </div>
             <div class="margin-little">
             <span class="lucent"><i class="fa fa-clock-o"></i>&nbsp; Description:</span>
-               <input type="text" class="text-input--underbar width-full" placeholder="" value="" name="txtPhone" id="txtPhone">
+               <textarea style="height:40px;" class="text-input--underbar width-full" placeholder="" value="" name="txtTaskDescription" id="txtTaskDescription"></textarea>
             </div>
             <div class="margin-little">
             <span class="lucent"><i class="fa fa-clock-o"></i>&nbsp; Start Time:</span>
-               <input type="date" class="text-input--underbar width-full" placeholder="" value="" name="txtEmail" id="txtEmail">
+               <input type="datetime-local" class="text-input--underbar width-full" placeholder="" value="" name="txtTaskStartTime" id="txtTaskStartTime">
             </div>
+            
             <div class="margin-little">
             <span class="lucent"><i class="fa fa-clock-o"></i>&nbsp; End Time:</span>
-               <input type="datetime-local" class="text-input--underbar width-full" placeholder="" value="" name="txtUserName" id="txtUserName">
-            <div>
+               <input type="datetime-local" class="text-input--underbar width-full" placeholder="" value="" name="txtTaskEndTime" id="txtTaskEndTime">
+            </div>
+       		
+            	     
+            <div class="margin-little">
+           		<span class="lucent">
+                    <i class="fa fa-clock-o width-half">&nbsp; Priority:</i>
+                    <i class="fa fa-clock-o width-half">&nbsp; Status:</i>
+                </span>
+            	<select  class="text-input--underbar width-half" name="lsPriority" id="lsPriority">
+                    <option selected value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+                <select  class="text-input--underbar width-half" name="lsStatus" id="lsStatus">
+                    <option selected value="Not Started">Not Started</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                    <option value="Pending Input">Pending Input</option>
+                    <option value="Deferred">Deferred</option>
+                </select>
+            
+            
+           
+            <div class="margin-little">
+                <span class="lucent">
+                    <i class="fa fa-clock-o width-half">&nbsp; Group:</i>
+                    <i class="fa fa-clock-o width-half">&nbsp; Assigned to:</i>
+                </span>
+                <span>
+                	<select  class="text-input--underbar width-half" name="lsGroup" id="lsGroup">
+                    <option selected value="noGroup">No Group</option>
+                    <script type="text/javascript">
+						var group =JSON.parse(sessionStorage.getItem('groups'));
+                    	for(var i = 0; i< group.length; i++){
+							document.writeln('<option value="'+group[i].name+'">'+group[i].name+'</option>');
+						}
+                    </script>
+                    </select>	
+                    
+                	<select  class="text-input--underbar width-half" name="lsAssignedTo" id="lsAssignedTo">
+                    	<script type="text/javascript">
+                        	document.writeln('<option selected value="'+JSON.parse(sessionStorage.getItem('user'))[0].id+'/">'+JSON.parse(sessionStorage.getItem('user'))[0].user_name+'</option>');
+                        </script>
+                        
+                       
+                        <option value="Completed">Completed</option>
+                        <option value="Pending Input">Pending Input</option>
+                        <option value="Deferred">Deferred</option>
+                    </select>
+            </div>
+
             <div class="vspc margin-little">
-               <button class="button login-button" type="submit">Sign up</button>
+               <button class="button" type="submit">Done</button>
             </div>
         </form>
   	</div>
@@ -90,7 +140,6 @@
         </button>
       </label>
     </div>
-      <script src="js/app.js"></script>  
       <script src="js/controllers.js"></script>
   </body>
 </html>
