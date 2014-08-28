@@ -146,13 +146,13 @@ function taskDetail(id)
 }
 
 function spanCreateTask(){
-	getGroupsByUser(JSON.parse(sessionStorage.getItem("user"))[0].id);
-	if(JSON.parse(sessionStorage.getItem("groups")).length>0){
+	var callback = function() {
 		window.location = 'createTask.html';
 	}
+	getGroupsByUser(JSON.parse(sessionStorage.getItem("user"))[0].id, callback);
 }
 
-function getGroupsByUser(id_user){
+function getGroupsByUser(id_user, callback){
 	var postData =  'IdUser='+id_user;
 	console.log(postData);
 	$.ajax({
@@ -164,6 +164,9 @@ function getGroupsByUser(id_user){
 			console.log(data);
 			appData=JSON.parse(data);
 			sessionStorage.setItem("groups",JSON.stringify(appData.groups));
+			if(callback) {
+				callback();
+			}
 		},
 		error: function(data)
 		{
