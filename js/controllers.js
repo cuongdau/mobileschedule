@@ -1,7 +1,7 @@
 // JavaScript Document
 // The root URL for the RESTful services
 //'http://baotrithuc.net/cellar/save.php'
-//var rootURL = "http://baotrithuc.net/mscheduler/index.php";
+//var rootURL = "http://baotrithuc.net/mschedule/index.php";
 var rootURL = "http://localhost/mschedule/index.php";
 
 var activities = null;
@@ -26,7 +26,7 @@ $('#fLogin').submit(function() {
 		data: postData,
 		url: rootURL+'/cverifylogin',
 		beforeSend: function(){
-			loadPage();
+		loadPage();
 		},
 		success: function(data){
 			hidePage();
@@ -60,9 +60,13 @@ $('#fSignUp').submit(function(){
 	$.ajax({
 		type:	'POST',
 		data:	postData,
-		url:	rootURL+"/cregister",
+		url:	rootURL+'/cregister/signUp',
+		beforeSend: function(){
+		loadPage();
+		},
 		success: function(data)
 		{
+			hidePage();
 			console.log(data);
 			appData=JSON.parse(data);
 			if(appData.page == 'index')
@@ -71,15 +75,15 @@ $('#fSignUp').submit(function(){
 				window.location='index.html'; // this is login page
 			}else if(appData.page=='signup')
 			{
-				alert('User name was used');
 				alert(appData.message);
 				location.reload();
 			}
 		},
 		error: function(data)
 		{
+			hidePage();
 			console.log(data);
-			alert('Sign up is not successfully...');
+			alert('Sign up is not successfully...123');
 			alert(appData.message);
 			location.reload();
 		}
@@ -141,10 +145,76 @@ function taskDetail(id)
 	
 }
 
-function createTask() {
-	var postData ='createBy='+JSON.parse(sessionStorage.getItem("user"))[0].id;
-	window.location = 'createTask.html';
+function spanCreateTask(){
+	getGroupsByUser(JSON.parse(sessionStorage.getItem("user"))[0].id);
+	if(JSON.parse(sessionStorage.getItem("groups")).length>0){
+		window.location = 'createTask.html';
+	}
 }
+
+function getGroupsByUser(id_user){
+	var postData =  'IdUser='+id_user;
+	console.log(postData);
+	$.ajax({
+		type:'POST',
+		data: postData,
+		url: rootURL+'/cgroups/getGroupsByUser',
+		success: function(data)
+		{
+			console.log(data);
+			appData=JSON.parse(data);
+			sessionStorage.setItem("groups",JSON.stringify(appData.groups));
+		},
+		error: function(data)
+		{
+			alert('khong dua len server de lay groupsByUser duoc..');
+			location.reload();
+		}
+	});
+	return false;
+}
+
+
+
+
+////------- Create Task -----------
+$('#fCreateTask').submit(function(){
+	
+	var postData=$(this).serialize()+'&createBy='+JSON.parse(sessionStorage.getItem("user"))[0].id;
+	console.log(postData);
+	$.ajax({
+		type:	'POST',
+		data:	postData,
+		url:	rootURL+'/ctasks/insertTask',
+		success: function(data)
+		{
+			console.log(data);
+			appData=JSON.parse(data);
+			if(appData.page == 'task')
+			{
+				sessionStorage.setItem("tasks",JSON.stringify(appData.tasks));
+				window.location='task.html'; // this is login page
+			}else
+			{
+				alert('khong them duoc vao csdl.1..');
+				location.reload();
+			}
+		},
+		error: function(data)
+		{
+			alert('khong them duoc vao csdl 2...');
+			location.reload();
+		}
+	});
+	return false;
+});
+
+function mCircles() 
+{
+	getGroupsByUser(JSON.parse(sessionStorage.getItem("user"))[0].id);
+	window.location='mCircle.html';
+}
+
 
 function loadPage()
 {
@@ -156,7 +226,7 @@ function hidePage() {
 }
 
 var isSearch = true;
-function spSearch(){
+function spanSearch(){
 	if(!isSearch) {
 		$('#divSearch').hide();
 	} else {
