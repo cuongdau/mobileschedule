@@ -4,15 +4,6 @@
 //var rootURL = "http://baotrithuc.net/mschedule/index.php";
 var rootURL = "http://localhost/mschedule/index.php";
 
-var activities = null;
-var appData =null;
-
-window.appPage=null;
-window.appTasks=null;
-var appUser;
-var UserName='admin123';
-var count=0;
-
 
 ////-------Action LOGIN-----------
 
