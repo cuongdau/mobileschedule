@@ -1,8 +1,8 @@
 // JavaScript Document
 // The root URL for the RESTful services
 //'http://baotrithuc.net/cellar/save.php'
-//var rootURL = "http://baotrithuc.net/mschedule/index.php";
-var rootURL = "http://localhost/mschedule/index.php";
+var rootURL = "http://baotrithuc.net/mschedule/index.php";
+//var rootURL = "http://localhost/mschedule/index.php";
 
 
 ////-------Action LOGIN-----------
@@ -167,10 +167,6 @@ function getGroupsByUser(id_user, callback){
 	});
 	return false;
 }
-
-
-
-
 ////------- Create Task -----------
 $('#fCreateTask').submit(function(){
 	
@@ -202,14 +198,99 @@ $('#fCreateTask').submit(function(){
 	});
 	return false;
 });
-
+//-------------------------------
 function mCircles() 
 {
-	getGroupsByUser(JSON.parse(sessionStorage.getItem("user"))[0].id);
-	window.location='mCircle.html';
+	var callback = function(){
+		window.location='mCircle.html';
+	}
+	getGroupsByUser(JSON.parse(sessionStorage.getItem("user"))[0].id, callback);
+}
+////------- Create Group here -----------
+$('#fCreateGroup').submit(function(){
+	var postData=$(this).serialize()+'&IdUser='+JSON.parse(sessionStorage.getItem("user"))[0].id;
+	console.log(postData);
+	$.ajax({
+		type:	'POST',
+		data:	postData,
+		url:	rootURL+'/cgroups/insertGroup',
+		beforeSend: function(){
+		loadPage();
+		},
+		success: function(data)
+		{
+			hidePage();
+			console.log(data);
+			appData=JSON.parse(data);
+			sessionStorage.setItem("groups",JSON.stringify(appData.groups));
+			window.location = 'mCircle.html'; // this is login page
+		},
+		error: function(data)
+		{
+			hidePage();
+			alert(appData.message);
+			alert('it did not connect to server..');
+			location.reload();
+		}
+	});
+	return false;
+});
+
+//-------------for searching user --------
+var typingTimer;                //timer identifier
+var doneTypingInterval = 1000;  //time in ms, 5 second for example
+var keyWord;
+$('#searchUser').keyup(function(){
+    clearTimeout(typingTimer);
+	keyWord = $(this).val();
+    typingTimer = setTimeout(doneTyping, doneTypingInterval);
+});
+//on keydown, clear the countdown 
+$('#searchUser').keydown(function(){
+    clearTimeout(typingTimer);
+});
+
+//user is "finished typing," do something
+function doneTyping () {
+	if(keyWord.length>2){
+		var postData =  'keyWord='+keyWord;
+		console.log(postData);
+		$.ajax({
+			type:'POST',
+			data: postData,
+			url: rootURL+'/cusers/getUsersByKeyword',
+			success: function(data)
+			{
+				console.log(data);
+				appData=JSON.parse(data);
+				sessionStorage.setItem("searchUsers",JSON.stringify(appData.users));
+				window.location = 'mCircle.html'; // goi den trang tim kiem
+				
+			},
+			error: function(data)
+			{
+				alert('khong dua len server de lay groupsByUser duoc..');
+				location.reload();
+			}
+		});
+		return false;	
+	}
+}
+//------ end for searching user
+//------ add user from result of search
+function spanAddUser(id){
+	sessionStorage.removeItem("user_id");
+	sessionStorage.setItem("user_id",id);
+	sessionStorage.setItem("iconAddUser",'show');
+	//location.reload();
+}
+//
+function addUser(id_group){
 }
 
 
+//------ start load page, load div, load form, hide, show....
+//------ page loading....
 function loadPage()
 {
 	$('#loadPage').show();
@@ -218,7 +299,7 @@ function loadPage()
 function hidePage() {
 	$('#loadPage').hide();
 }
-
+//------  hide, show div search
 var isSearch = true;
 function spanSearch(){
 	if(!isSearch) {
@@ -228,8 +309,27 @@ function spanSearch(){
 	}
 	isSearch = !isSearch;
 }
-
-
+//------ hide show div Create Group
+var isCreateGroup = true;
+function spanCreateGroup(){
+	if(!isCreateGroup) {
+		$('#fCreateGroup').hide();
+	} else {
+		$('#fCreateGroup').show(); 
+	}
+	isCreateGroup = !isCreateGroup;
+}
+//------ hide, show div result of users after search....
+var isSearchUsers = true;
+function spanSearchUsers(){
+	if(isSearchUsers) {
+		$('#divResultSearchUsers').hide();
+		sessionStorage.removeItem("searchUsers");
+	} else {
+		$('#divResultSearchUsers').show(); 
+	}
+	isSearchUsers = !isSearchUsers;
+}
 
 
 

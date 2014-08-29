@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="lib/onsen/css/onsen-css-components.css"> 
   <link rel="stylesheet" href="css/grid_menu.css"/>
   <link rel="stylesheet" href="css/mschedule.css" />
-  <link rel="stylesheet" href="css/task.css">
+  <link rel="stylesheet" href="css/app.css">
     
   <script src="lib/onsen/js/angular/angular.js"></script>    
   <script src="lib/onsen/js/onsenui.js"></script>
@@ -78,6 +78,7 @@
                 <span>
                 	<select  class="text-input--underbar width-half" name="lsGroup" id="lsGroup">
                     <option selected value="noGroup">No Group</option>
+                    
                     <script type="text/javascript">
 						var group =JSON.parse(sessionStorage.getItem('groups'));
                     	for(var i = 0; i< group.length; i++){

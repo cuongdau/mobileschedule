@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="styles/app.css"/>
   <link rel="stylesheet" href="css/grid_menu.css"/>
   <link rel="stylesheet" href="css/mschedule.css" />
-  <link rel="stylesheet" href="css/task.css">
     
   <script src="lib/onsen/js/angular/angular.js"></script>    
   <script src="lib/onsen/js/onsenui.js"></script>
@@ -21,7 +20,8 @@
     <div class="navigation-bar">
       <div class="navigation-bar__left">
         <span class="icon-button--quiet navigation-bar__line-height">My Circles::</span>
-        <span id="spanCreateTask" class="icon-button--quiet navigation-bar__line-height"><i class="fa fa-plus-square"></i></span>
+        <span onClick="spanCreateGroup()" class="icon-button--quiet navigation-bar__line-height"><i class="fa fa-users">+</i></span>
+        <span onClick="spanSearchUsers()" class="icon-button--quiet navigation-bar__line-height"><i class="fa fa-user">+</i></span>
         <span onClick="spanSearch()" class="icon-button--quiet navigation-bar__line-height"><i class="fa fa-search"></i></span>
       </div>
     </div>
@@ -30,7 +30,57 @@
         <input id="filter" type="search" value="" placeholder="keyword..." class="display-block search-input">
         <span id="filter-count" class="lucent"></span>
     </div>
-
+    <!------- Search a user here ----->
+    <div id="divResultSearchUsers" class="margin-little">
+        <input id="searchUser" name="searchUser" type="search" value="" placeholder="Search all people" class="display-block search-input">
+        <ul class="list commentlist">
+        <script type="text/javascript">
+        	var searchUser = JSON.parse(sessionStorage.getItem('searchUsers'));
+			for(var i =0; i<searchUser.length; i++){
+				document.writeln('<li class="list__item list__item--tappable list__item__line-height list-item-container">');
+				document.writeln('<div class="list-item-main"><div class="list-item-left" style="float:left"><img src="img/user.jpg" class="avator"></div>');
+				document.writeln('<div class="list-item-content-search-user"><span class="list-item-name-search-user">'+searchUser[i].user_name+'</span><br />');
+				document.writeln('<span class="list-item-text-search-user lucent"><i class="fa fa-phone"></i> &n'+searchUser[i].phone_mobile+'</span></div><div onClick="spanAddUser(\''+searchUser[i].id+'\'),spanSearchUsers()"><span class="list-item-action-right" >&nbsp;&nbsp;<i class="fa fa-plus-circle"></i>&nbsp;&nbsp;&nbsp;</span></div></div></li>');
+			}
+        </script>
+        
+        </ul>
+    </div>
+	<!------- form create a group here ----->
+    <form id="fCreateGroup" style="display:none" class="margin-little">
+    	<div class="margin-little">
+            <span class="lucent"><i class="fa fa-users"></i>&nbsp; Name of Group:</span>
+            	<input type="text" required class="text-input--underbar width-full" placeholder="" value="" name="txtGroupName" id="txtGroupName">
+            </div>
+            <div class="margin-little">
+            <span class="lucent"><i class="fa fa-pencil-square-o"></i>&nbsp; Description:</span>
+              <textarea style="height:40px;" class="text-input--underbar width-full" placeholder="" value="" name="txtGroupDescription" id="txtGroupDescription"></textarea>
+            </div>
+            
+             <div class="vspc margin-little">
+               <button class="button" type="submit">Done</button>
+            </div>
+    </form>
+	<ul class="list list-top commentlist">
+    <script type="text/javascript">
+		var group = JSON.parse(sessionStorage.getItem('groups'));
+		for(var i =0; i < group.length; i++){	
+			document.writeln('<li class="list__item list__item--tappable list__item__line-height list-item-container"><div class="list-item-main"><div><span class="list-item-action-left" ><i class="fa fa-users"></i></span></div>');
+			document.writeln('<div class="list-item-content"><span class="list-item-name">'+group[i].name+'<br/>');
+			document.writeln('<span class="lucent">'+group[i].description+'</span></span> </div></div>');
+			
+			var iconRight = '<span class="notification">ex:0</span>';
+			if(sessionStorage.getItem('iconAddUser')=='show'){
+				var iconRight = '<span class="notification">&nbsp;+&nbsp;</span>';
+			}
+			document.writeln('<div onClick="addUser(\''+group[i].id+'\')"><span class="notification-right" >'+iconRight+'</span></div> </li>  ');
+		}
+		
+		
+		
+		
+	 </script>
+    </ul>
 
    <div class="tab-bar">
       <label class="tab-bar__item">
