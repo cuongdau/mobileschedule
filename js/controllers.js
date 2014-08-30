@@ -1,8 +1,8 @@
 // JavaScript Document
 // The root URL for the RESTful services
 //'http://baotrithuc.net/cellar/save.php'
-//var rootURL = "http://baotrithuc.net/mschedule/index.php";
-var rootURL = "http://localhost/mschedule/index.php";
+var rootURL = "http://baotrithuc.net/mschedule/index.php";
+//var rootURL = "http://localhost/mschedule/index.php";
 
 
 ////-------Action LOGIN-----------
