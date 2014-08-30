@@ -1,8 +1,8 @@
 // JavaScript Document
 // The root URL for the RESTful services
 //'http://baotrithuc.net/cellar/save.php'
-var rootURL = "http://baotrithuc.net/mschedule/index.php";
-//var rootURL = "http://localhost/mschedule/index.php";
+//var rootURL = "http://baotrithuc.net/mschedule/index.php";
+var rootURL = "http://localhost/mschedule/index.php";
 
 
 ////-------Action LOGIN-----------
@@ -155,6 +155,7 @@ function getGroupsByUser(id_user, callback){
 			console.log(data);
 			appData=JSON.parse(data);
 			sessionStorage.setItem("groups",JSON.stringify(appData.groups));
+			alert(appData.counts[0].count+appData.counts[1].count);
 			if(callback) {
 				callback();
 			}
@@ -278,14 +279,41 @@ function doneTyping () {
 }
 //------ end for searching user
 //------ add user from result of search
-function spanAddUser(id){
-	sessionStorage.removeItem("user_id");
-	sessionStorage.setItem("user_id",id);
-	sessionStorage.setItem("iconAddUser",'show');
-	//location.reload();
+function spanAddUser(user_name){
+	sessionStorage.removeItem("user_name");
+	sessionStorage.setItem("user_name",user_name);
 }
 //
-function addUser(id_group){
+function addUserToGroup(id_group, id_user){
+	var user_name = sessionStorage.getItem("user_name");
+	if(user_name == null){
+		alert('No people to add');
+	}else{
+		var postData =  'IdGroup='+id_group+'&UserName='+user_name;
+		console.log(postData);
+		$.ajax({
+			type:'POST',
+			data: postData,
+			url: rootURL+'/cgroups/insertUserIntoGroup',
+			success: function(data)
+			{
+				console.log(data);
+				appData=JSON.parse(data);
+				alert(appData.message +'cuong mai dang o day');
+				//sessionStorage.setItem("searchUsers",JSON.stringify(appData.users));
+				//window.location = 'mCircle.html'; // goi den trang tim kiem
+				sessionStorage.removeItem("user_name");
+				
+			},
+			error: function(data)
+			{
+				sessionStorage.removeItem("user_name");
+				alert('khong dua len server de lay groupsByUser duoc..');
+				location.reload();
+			}
+		});
+		return false;	
+	}
 }
 
 
@@ -324,11 +352,20 @@ var isSearchUsers = true;
 function spanSearchUsers(){
 	if(isSearchUsers) {
 		$('#divResultSearchUsers').hide();
-		sessionStorage.removeItem("searchUsers");
 	} else {
 		$('#divResultSearchUsers').show(); 
 	}
 	isSearchUsers = !isSearchUsers;
+}
+//------ hide, show div result of group's users....
+var isGoupOfUsers = true;
+function spanGoupUsers(){
+	if(!isGoupOfUsers) {
+		$('#divGroupUsers').hide();
+	} else {
+		$('#divGroupUsers').show(); 
+	}
+	isGoupOfUsers = !isGoupOfUsers;
 }
 
 
