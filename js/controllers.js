@@ -1,8 +1,8 @@
 // JavaScript Document
 // The root URL for the RESTful services
 //'http://baotrithuc.net/cellar/save.php'
-//var rootURL = "http://baotrithuc.net/mschedule/index.php";
-var rootURL = "http://localhost/mschedule/index.php";
+var rootURL = "http://baotrithuc.net/mschedule/index.php";
+//var rootURL = "http://localhost/mschedule/index.php";
 
 
 ////-------Action LOGIN-----------
@@ -200,15 +200,20 @@ $('#fCreateTask').submit(function(){
 });
 //------------ change group to limit members ----------------
 function createTaskChangeGroup(){
-	//var e = document.getElementById("lsGroup");
-	//var group_id = e.options[e.selectedIndex].value;
-	//var callback = function(){
-	// window.location = 'selectMembers.html';
-	alert('ok');
-		$("#selectMember").load('#selectMenber');
-	//}
-	//getMemberByGroup(group_id, callback);
-	
+	var e = document.getElementById("lsGroup");
+	var group_id = e.options[e.selectedIndex].value;
+	var callback = function(data){
+		var userList = data.usersInGroup;
+		var select = $('#selectMember');
+		select.html('');
+		for(var i=0; i < userList.length; i++) {
+			var option = $('<option>');
+			option.attr('value', userList[i].id);
+			option.html(userList[i].user_name);
+			select.append(option);
+		}
+	}
+	getMemberByGroup(group_id, callback);	
 }
 //-------------------------------
 function mCircles() 
@@ -339,7 +344,7 @@ function getMemberByGroup(group_id, callback){
 			appData=JSON.parse(data);
 			sessionStorage.setItem("usersInGroup",JSON.stringify(appData.usersInGroup));
 			if(callback) {
-				callback();
+				callback(appData);
 			}
 		},
 		error: function(data)

@@ -76,19 +76,16 @@
                     <i class="fa fa-clock-o width-half">&nbsp; Assigned to:</i>
                 </span>
                 <span>
-                	<select onChange="createTaskChangeGroup()"  class="text-input--underbar width-half" name="lsGroup" id="lsGroup">
-                    <script type="text/javascript">
-						document.writeln('<option selected value="noGroup">No Group</option>');
-						var group =JSON.parse(sessionStorage.getItem('groups'));
-                    	for(var i = 0; i< group.length; i++){
-							document.writeln('<option value="'+group[i].id+'">'+group[i].name+'</option>');
-						}
-                    </script>
-                    </select>	
-                    
-                    
-                	<div id="selectMember"></div>
-                    
+				<select onChange="createTaskChangeGroup()" class="text-input--underbar width-half" name="lsGroup" id="lsGroup">
+				<script type="text/javascript">
+					document.writeln('<option selected value="noGroup">No Group</option>');
+					var group =JSON.parse(sessionStorage.getItem('groups'));
+					for(var i = 0; i< group.length; i++){
+						document.writeln('<option value="'+group[i].id+'">'+group[i].name+'</option>');
+					}
+				</script>
+				</select>
+				<select id="selectMember" class="text-input--underbar width-half"></select>                    
             </div>
 
             <div class="vspc margin-little">
@@ -96,11 +93,6 @@
             </div>
         </form>
   	</div>
-               
-                
-       
-
-
 
    <div class="tab-bar">
       <label class="tab-bar__item">
