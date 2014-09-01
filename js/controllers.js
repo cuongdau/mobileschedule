@@ -1,8 +1,8 @@
 // JavaScript Document
 // The root URL for the RESTful services
 //'http://baotrithuc.net/cellar/save.php'
-var rootURL = "http://baotrithuc.net/mschedule/index.php";
-//var rootURL = "http://localhost/mschedule/index.php";
+//var rootURL = "http://baotrithuc.net/mschedule/index.php";
+var rootURL = "http://localhost/mschedule/index.php";
 
 
 ////-------Action LOGIN-----------
@@ -155,7 +155,6 @@ function getGroupsByUser(id_user, callback){
 			console.log(data);
 			appData=JSON.parse(data);
 			sessionStorage.setItem("groups",JSON.stringify(appData.groups));
-			alert(appData.counts[0].count+appData.counts[1].count);
 			if(callback) {
 				callback();
 			}
@@ -199,6 +198,18 @@ $('#fCreateTask').submit(function(){
 	});
 	return false;
 });
+//------------ change group to limit members ----------------
+function createTaskChangeGroup(){
+	//var e = document.getElementById("lsGroup");
+	//var group_id = e.options[e.selectedIndex].value;
+	//var callback = function(){
+	// window.location = 'selectMembers.html';
+	alert('ok');
+		$("#selectMember").load('#selectMenber');
+	//}
+	//getMemberByGroup(group_id, callback);
+	
+}
 //-------------------------------
 function mCircles() 
 {
@@ -299,11 +310,7 @@ function addUserToGroup(id_group, id_user){
 			{
 				console.log(data);
 				appData=JSON.parse(data);
-				alert(appData.message +'cuong mai dang o day');
-				//sessionStorage.setItem("searchUsers",JSON.stringify(appData.users));
-				//window.location = 'mCircle.html'; // goi den trang tim kiem
 				sessionStorage.removeItem("user_name");
-				
 			},
 			error: function(data)
 			{
@@ -315,8 +322,67 @@ function addUserToGroup(id_group, id_user){
 		return false;	
 	}
 }
-
-
+function getMemberByGroup(group_id, callback){
+	var postData='&IdGroup='+group_id;
+	console.log(postData);
+	$.ajax({
+		type:	'POST',
+		data:	postData,
+		url:	rootURL+'/cgroups/getUserByGroup',
+		beforeSend: function(){
+		loadPage();
+		},
+		success: function(data)
+		{
+			hidePage();
+			console.log(data);
+			appData=JSON.parse(data);
+			sessionStorage.setItem("usersInGroup",JSON.stringify(appData.usersInGroup));
+			if(callback) {
+				callback();
+			}
+		},
+		error: function(data)
+		{
+			hidePage();
+			alert('it did not connect to server..');
+			location.reload();
+		}
+	});
+	return false;
+}
+function detailGroup(group_id){
+	var callback = function(){
+		window.location='detailGroup.html';
+	}
+	getMemberByGroup(group_id, callback);
+}
+function removeUser(member_id,group_id){
+	var postData='&IdMember='+member_id;
+	console.log(postData);
+	$.ajax({
+		type:	'POST',
+		data:	postData,
+		url:	rootURL+'/cgroups/removeUserInGroup',
+		beforeSend: function(){
+		loadPage();
+		},
+		success: function(data)
+		{
+			console.log(data);
+			appData=JSON.parse(data);
+			detailGroup(group_id);
+			
+		},
+		error: function(data)
+		{
+			hidePage();
+			alert('it did not connect to server..');
+			location.reload();
+		}
+	});
+	return false;
+}
 //------ start load page, load div, load form, hide, show....
 //------ page loading....
 function loadPage()
