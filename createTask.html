@@ -76,27 +76,19 @@
                     <i class="fa fa-clock-o width-half">&nbsp; Assigned to:</i>
                 </span>
                 <span>
-                	<select  class="text-input--underbar width-half" name="lsGroup" id="lsGroup">
-                    <option selected value="noGroup">No Group</option>
-                    
+                	<select onChange="createTaskChangeGroup()"  class="text-input--underbar width-half" name="lsGroup" id="lsGroup">
                     <script type="text/javascript">
+						document.writeln('<option selected value="noGroup">No Group</option>');
 						var group =JSON.parse(sessionStorage.getItem('groups'));
                     	for(var i = 0; i< group.length; i++){
-							document.writeln('<option value="'+group[i].name+'">'+group[i].name+'</option>');
+							document.writeln('<option value="'+group[i].id+'">'+group[i].name+'</option>');
 						}
                     </script>
                     </select>	
                     
-                	<select  class="text-input--underbar width-half" name="lsAssignedTo" id="lsAssignedTo">
-                    	<script type="text/javascript">
-                        	document.writeln('<option selected value="'+JSON.parse(sessionStorage.getItem('user'))[0].id+'/">'+JSON.parse(sessionStorage.getItem('user'))[0].user_name+'</option>');
-                        </script>
-                        
-                       
-                        <option value="Completed">Completed</option>
-                        <option value="Pending Input">Pending Input</option>
-                        <option value="Deferred">Deferred</option>
-                    </select>
+                    
+                	<div id="selectMember"></div>
+                    
             </div>
 
             <div class="vspc margin-little">

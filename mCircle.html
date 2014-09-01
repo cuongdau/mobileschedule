@@ -52,7 +52,6 @@
         <input id="searchUser" name="searchUser" type="search" value="" placeholder="Search all people" class="display-block search-input">
     <!------- Search users here ----->
     <div id="divResultSearchUsers">   <!------- defaul: run,  ----->
-        
         <ul class="list commentlist">
         <script type="text/javascript">
         	var searchUser = JSON.parse(sessionStorage.getItem('searchUsers'));
@@ -80,9 +79,9 @@
 		var group = JSON.parse(sessionStorage.getItem('groups'));
 		for(var i =0; i < group.length; i++){	
 			document.writeln('<li class="list__item list__item--tappable list__item__line-height list-item-container"><div class="list-item-main"><div><span class="list-item-action-left" ><i class="fa fa-users"></i></span></div>');
-			document.writeln('<div class="list-item-content"><span class="list-item-name">'+group[i].name+'<br/>');
+			document.writeln('<div onClick="detailGroup(\''+group[i].id+'\')" class="list-item-content"><span class="list-item-name">'+group[i].name+'<br/>');
 			document.writeln('<span class="lucent">'+group[i].description+'</span></span> </div></div>');
-			document.writeln('<div onClick="addUserToGroup(\''+group[i].id+'\'),spanSearchUsers()"><span class="notification-right" ><span class="notification">24 + </span></span></div> </li>  ');
+			document.writeln('<div onClick="addUserToGroup(\''+group[i].id+'\'),spanSearchUsers()"><span class="notification-right" ><span class="notification">'+group[i].count +'&nbsp;+</span></span></div> </li>  ');
 		}
 	 </script>
     </ul>
