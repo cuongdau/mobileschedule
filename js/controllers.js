@@ -81,6 +81,41 @@ $('#fSignUp').submit(function(){
 	});
 	return false;
 });
+///------------- update account ---------
+function saveUpdateAccount(){
+	var postData=$('form').serialize();
+	console.log(postData);
+	$.ajax({
+		type:	'POST',
+		data:	postData,
+		url:	rootURL+'/cusers/updateUser',
+		beforeSend: function(){
+		loadPage();
+		},
+		success: function(data)
+		{
+			hidePage();
+			console.log(data);
+			appData=JSON.parse(data);
+			sessionStorage.setItem('user',JSON.stringify(appData.user));
+			location.load = 'account.html';
+			
+		},
+		error: function(data)
+		{
+			hidePage();
+			console.log(data);
+			alert('update was not succesfuly');
+			location.reload();
+		}
+	});
+	return false;
+	
+}
+///------------- Cancel update account ---------
+function cancelUpdateAccount(){
+	location.reload();
+}
 ///------------- action call My Tasks ---------
 $('#divMyTasks').click(function() {
 	var postData = 'IdUser='+JSON.parse(sessionStorage.getItem("user"))[0].id;
@@ -89,7 +124,11 @@ $('#divMyTasks').click(function() {
 		type: 'POST',
 		data: postData,
 		url: rootURL+'/ctasks/GetTasksByUser',
+		beforeSend: function(){
+		loadPage();
+		},
 		success: function(data){
+			hidePage();
 			console.log(data);
 			appData=JSON.parse(data);
 			if(appData.page == 'task')
@@ -103,11 +142,18 @@ $('#divMyTasks').click(function() {
 			}
 		},
 		error: function(data){
+			hidePage();
 		}
 	});
 	return false;
 });
+$('#divAccount').click(function() {
+		window.location='account.html';
+});
 
+$('#divMyCalendar').click(function() {
+	window.location='calendar.html';
+});
 function taskDetail(id) 
 {
 	var postData = 'IdTask='+id;//JSON.parse(sessionStorage.getItem('tasks'))[id].id;
@@ -116,7 +162,11 @@ function taskDetail(id)
 		type: 'POST',
 		data: postData,
 		url: rootURL+'/ctasks/GetTaskById',
+		beforeSend: function(){
+		loadPage();
+		},
 		success: function(data){
+			hidePage();
 			console.log(data);
 			appData=JSON.parse(data);
 			if(appData.page == 'taskDetail')
@@ -130,6 +180,7 @@ function taskDetail(id)
 			}
 		},
 		error: function(data){
+			hidePage();
 		}
 	});
 	return false;
@@ -150,8 +201,12 @@ function getGroupsByUser(id_user, callback){
 		type:'POST',
 		data: postData,
 		url: rootURL+'/cgroups/getGroupsByUser',
+		beforeSend: function(){
+		loadPage();
+		},
 		success: function(data)
 		{
+			hidePage();
 			console.log(data);
 			appData=JSON.parse(data);
 			sessionStorage.setItem("groups",JSON.stringify(appData.groups));
@@ -161,6 +216,7 @@ function getGroupsByUser(id_user, callback){
 		},
 		error: function(data)
 		{
+			hidePage();
 			alert('khong dua len server de lay groupsByUser duoc..');
 			location.reload();
 		}
@@ -176,8 +232,12 @@ $('#fCreateTask').submit(function(){
 		type:	'POST',
 		data:	postData,
 		url:	rootURL+'/ctasks/insertTask',
+		beforeSend: function(){
+		loadPage();
+		},
 		success: function(data)
 		{
+			hidePage();
 			console.log(data);
 			appData=JSON.parse(data);
 			if(appData.page == 'task')
@@ -192,25 +252,41 @@ $('#fCreateTask').submit(function(){
 		},
 		error: function(data)
 		{
+			hidePage();
 			alert('khong them duoc vao csdl 2...');
 			location.reload();
 		}
 	});
 	return false;
 });
+//------------ deleted task ----------------
+function deleteTask(task_id)
+{
+	alert(task_id);	
+}
 //------------ change group to limit members ----------------
 function createTaskChangeGroup(){
 	var e = document.getElementById("lsGroup");
 	var group_id = e.options[e.selectedIndex].value;
+	
 	var callback = function(data){
 		var userList = data.usersInGroup;
 		var select = $('#selectMember');
 		select.html('');
-		for(var i=0; i < userList.length; i++) {
+		
+		// In case NoGroup
+		if(group_id == 'noGroup'){
 			var option = $('<option>');
-			option.attr('value', userList[i].id);
-			option.html(userList[i].user_name);
+			option.attr('value', JSON.parse(sessionStorage['user'])[0].id);
+			option.html(JSON.parse(sessionStorage['user'])[0].user_name);
 			select.append(option);
+		}else{
+			for(var i=0; i < userList.length; i++) {
+				var option = $('<option>');
+				option.attr('value', userList[i].id);
+				option.html(userList[i].user_name);
+				select.append(option);
+			}
 		}
 	}
 	getMemberByGroup(group_id, callback);	
@@ -276,8 +352,12 @@ function doneTyping () {
 			type:'POST',
 			data: postData,
 			url: rootURL+'/cusers/getUsersByKeyword',
+			beforeSend: function(){
+			loadPage();
+			},
 			success: function(data)
 			{
+				hidePage();
 				console.log(data);
 				appData=JSON.parse(data);
 				sessionStorage.setItem("searchUsers",JSON.stringify(appData.users));
@@ -286,6 +366,7 @@ function doneTyping () {
 			},
 			error: function(data)
 			{
+				hidePage();
 				alert('khong dua len server de lay groupsByUser duoc..');
 				location.reload();
 			}
@@ -311,14 +392,20 @@ function addUserToGroup(id_group, id_user){
 			type:'POST',
 			data: postData,
 			url: rootURL+'/cgroups/insertUserIntoGroup',
+			beforeSend: function(){
+			loadPage();
+			},
 			success: function(data)
 			{
+				hidePage();
 				console.log(data);
 				appData=JSON.parse(data);
-				sessionStorage.removeItem("user_name");
+				
+				mCircles();
 			},
 			error: function(data)
 			{
+				hidePage();
 				sessionStorage.removeItem("user_name");
 				alert('khong dua len server de lay groupsByUser duoc..');
 				location.reload();
@@ -443,187 +530,3 @@ function spanGoupUsers(){
 
 
 
-
-
-
-$(".form_post_comment").each(function() {
-	alert("dang hoat dong");
-	var form = $(this);
-	form.submit(function(event) {
-	event.preventDefault();
-	var id = "44";
-	$.ajax({
-	type: "POST",
-	url: "http://localhost/Ecowebjob/index.php/ccomment/add_comment/",
-	data: $(this).serialize(),
-	success: function (response) {
-		alert("thanh cong ...");
-	//$("#commentList" + id).append(response);
-	
-	},
-	error: function(xhr, textStatus, errorThrown) {
-	alert("that bai...");
-	}
-	});
-	});
-	
-});
-
-$('').click(function() {
-});
-
-$('#btnSave').click(function() {
-	if ($('#wineId').val() == '')
-		addWine();
-	else
-		updateWine();
-	return false;
-});
-
-$('#btnDelete').click(function() {
-	deleteWine();
-	return false;
-});
-
-$('#wineList a').live('click', function() {
-	findById($(this).data('identity'));
-});
-
-// Replace broken images with generic wine bottle
-$("img").error(function(){
-  $(this).attr("src", "pics/generic.jpg");
-
-});
-
-function search(searchKey) {
-	if (searchKey == '') 
-		findAll();
-	else
-		findByName(searchKey);
-}
-
-function newWine() {
-	$('#btnDelete').hide();
-	currentWine = {};
-	renderDetails(currentWine); // Display empty form
-}
-
-function findAll() {
-	console.log('findAll');
-	$.ajax({
-		type: 'GET',
-		url: rootURL,
-		dataType: "json", // data type of response
-		success: renderList
-	});
-}
-
-function findByName(searchKey) {
-	console.log('findByName: ' + searchKey);
-	$.ajax({
-		type: 'GET',
-		url: rootURL + '/search/' + searchKey,
-		dataType: "json",
-		success: renderList 
-	});
-}
-
-function findById(id) {
-	console.log('findById: ' + id);
-	$.ajax({
-		type: 'GET',
-		url: rootURL + '/' + id,
-		dataType: "json",
-		success: function(data){
-			$('#btnDelete').show();
-			console.log('findById success: ' + data.name);
-			currentWine = data;
-			renderDetails(currentWine);
-		}
-	});
-}
-
-function addWine() {
-	console.log('addWine');
-	$.ajax({
-		type: 'POST',
-		contentType: 'application/json',
-		url: rootURL,
-		dataType: "json",
-		data: formToJSON(),
-		success: function(data, textStatus, jqXHR){
-			alert('Wine created successfully');
-			$('#btnDelete').show();
-			$('#wineId').val(data.id);
-		},
-		error: function(jqXHR, textStatus, errorThrown){
-			alert('addWine error: that ko ba con ' + textStatus);
-		}
-	});
-}
-
-function updateWine() {
-	console.log('updateWine');
-	$.ajax({
-		type: 'PUT',
-		contentType: 'application/json',
-		url: rootURL + '/' + $('#wineId').val(),
-		dataType: "json",
-		data: formToJSON(),
-		success: function(data, textStatus, jqXHR){
-			alert('Wine updated successfully');
-		},
-		error: function(jqXHR, textStatus, errorThrown){
-			alert('updateWine error: ' + textStatus);
-		}
-	});
-}
-
-function deleteWine() {
-	console.log('deleteWine');
-	$.ajax({
-		type: 'DELETE',
-		url: rootURL + '/' + $('#wineId').val(),
-		success: function(data, textStatus, jqXHR){
-			alert('Wine deleted successfully');
-		},
-		error: function(jqXHR, textStatus, errorThrown){
-			alert('deleteWine error');
-		}
-	});
-}
-
-function renderList(data) {
-	// JAX-RS serializes an empty list as null, and a 'collection of one' as an object (not an 'array of one')
-	var list = data == null ? [] : (data.wine instanceof Array ? data.wine : [data.wine]);
-
-	$('#wineList li').remove();
-	$.each(list, function(index, wine) {
-		$('#wineList').append('<li><a href="#" data-identity="' + wine.id + '">'+wine.name+'</a></li>');
-	});
-}
-
-function renderDetails(wine) {
-	$('#wineId').val(wine.id);
-	$('#name').val(wine.name);
-	$('#grapes').val(wine.grapes);
-	$('#country').val(wine.country);
-	$('#region').val(wine.region);
-	$('#year').val(wine.year);
-	$('#pic').attr('src', 'pics/' + wine.picture);
-	$('#description').val(wine.description);
-}
-
-// Helper function to serialize all the form fields into a JSON string
-function formToJSON() {
-	return JSON.stringify({
-		"id": $('#wineId').val(), 
-		"name": $('#name').val(), 
-		"grapes": $('#grapes').val(),
-		"country": $('#country').val(),
-		"region": $('#region').val(),
-		"year": $('#year').val(),
-		"picture": currentWine.picture,
-		"description": $('#description').val()
-		});
-}
