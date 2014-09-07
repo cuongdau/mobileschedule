@@ -57,6 +57,7 @@
 				}
 				calendar.fullCalendar('unselect');
 			},
+            disableDragging: true,
 			editable: true, // muon thay cho nay = vong for()
 			events: function(start, end, callback) {
 				var tasks =JSON.parse(sessionStorage['tasks']);
@@ -73,12 +74,12 @@
 				}
 				callback(events);
 			},
-			eventClick: function() {
+			eventClick: function(event) {
 				debugger;
 				alert('ok');
 			}
 		}
-		
+
 		var calendar = $('#calendar').fullCalendar(data);
 	});
 
