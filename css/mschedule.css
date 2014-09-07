@@ -63,7 +63,15 @@ a {
 .width-half {
     width: 48%;
 }
+.width-more-half {
+    width: 65%;
+}
 
+.title_left {
+	padding-top:10px;
+	float:left;
+    width: 30%;
+}
 .lucent {
     opacity: 0.4;
 }
