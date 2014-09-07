@@ -13,40 +13,78 @@
   <script src="lib/onsen/js/onsenui.js"></script>
   <script src="js/jquery-1.7.1.min.js"></script>
   
+<link href="css/fullcalendar.css" rel="stylesheet" /><!-- Full calendar -->
+<!-- Script -->
+<script src="js/jquery-1.10.2.js"></script><!-- Jquery -->
+<script src="js/fullcalendar.min.js"></script> <!-- Full Calendar -->
 
   </head>
   <body ontouchstart="" class="page">
 
     <div class="navigation-bar">
-      <div class="navigation-bar__left">
-        <span class="icon-button--quiet navigation-bar__line-height">My Circles::</span>
-        <span onClick="spanCreateGroup()" class="icon-button--quiet navigation-bar__line-height"><i class="fa fa-users">+</i></span>
-        <span onClick="spanSearchUsers()" class="icon-button--quiet navigation-bar__line-height"><i class="fa fa-user">+</i></span>
-        <span onClick="spanSearch()" class="icon-button--quiet navigation-bar__line-height"><i class="fa fa-search"></i></span>
-      </div>
     </div>
-    <!------- Search here ----->
-    <div id="divSearch" class="margin-little" style="display:none">
-        <input id="filter" type="search" value="" placeholder="keyword..." class="display-block search-input">
-    <span id="filter-count" class="lucent"></span>
-    </div>
-    <!------- Search users here ----->
-    <div>
-        <ul class="list commentlist">
-        <script type="text/javascript">
-        	var user = JSON.parse(sessionStorage.getItem('usersInGroup'));
-			for(var i =0; i<user.length; i++){
-				document.writeln('<li class="list__item list__item--tappable list__item__line-height list-item-container">');
-				document.writeln('<div class="list-item-main"><div class="list-item-left" style="float:left"><img src="img/user.jpg" class="avator"></div>');
-				document.writeln('<div class="list-item-content-search-user"><span class="list-item-name-search-user">'+user[i].user_name+'</span><br />');
-				document.writeln('<span class="list-item-text-search-user lucent"><i class="fa fa-phone"></i> &nbsp;'+user[i].phone_mobile+'</span></div><div onClick="removeUser(\''+user[i].member_id+'\',\''+user[i].group_id+'\')"><span class="list-item-action-right" >&nbsp;&nbsp;<i class="fa fa-times-circle"></i>&nbsp;&nbsp;&nbsp;</span></div></div></li>');
+    
+    
+    <script>
+
+	$(document).ready(function() {
+	
+		var date = new Date();
+		var d = date.getDate();
+		var m = date.getMonth();
+		var y = date.getFullYear();
+		
+		var data = {
+			header: {
+				left: 'prev,next today',
+				center: '',
+				right: 'title' // 'month,agendaWeek,agendaDay'
+			},
+			selectable: false,
+			selectHelper: true,
+			select: function(start, end, allDay) {
+				var title = prompt('Event Title:');
+				if (title) {
+					calendar.fullCalendar('renderEvent',
+						{
+							title: title,
+							start: start,
+							end: end,
+							allDay: allDay
+						},
+						true // make the event "stick"
+					);
+				}
+				calendar.fullCalendar('unselect');
+			},
+			editable: true, // muon thay cho nay = vong for()
+			events: function(start, end, callback) {
+				var tasks =JSON.parse(sessionStorage['tasks']);
+				var events =[];
+				for(var i=0; i<tasks.length; i++){
+					var obj = {
+								id: tasks[i].id,
+								title: tasks[i].name,
+								start: new Date(tasks[i].date_start.slice(0,10).split('-')),
+								end: new Date(tasks[i].date_due.slice(0,10).split('-')),
+							}
+					//data.events.push(obj);
+					events.push(obj);
+				}
+				callback(events);
+			},
+			eventClick: function() {
+				debugger;
+				alert('ok');
 			}
-			
-        </script>
-        </ul>
-    </div>
-    
-    
+		}
+		
+		var calendar = $('#calendar').fullCalendar(data);
+	});
+
+</script>
+
+    <div id='calendar'></div>
     
 
    <div class="tab-bar">

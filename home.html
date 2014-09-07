@@ -23,31 +23,26 @@
 <body>    
 
   <div class="navigation-bar">
-      <div class="navigation-bar__left">
-        <span class="icon-button--quiet navigation-bar__line-height"><a href="index.html">Prev </a></span>
-      </div>
       <div class="navigation-bar__center">
-        <span class="navigation-bar__title navigation-bar__line-height">M-Schedule </span>
-      </div>
-      <div class="navigation-bar__right">
-        <span class="icon-button--quiet navigation-bar__line-height font-weight-500">Next </span>
+        <span class="icon-button--quiet navigation-bar__line-height">.: MOBILE SCHEDULE :.</span>
+        
       </div>
     </div>
-
+    
     <div class="grid-menu-scroller">
       <div class="grid-menu">
         <div class="grid-menu-3items-row centering-and-alignment">
-          <div class="grid-menu-item list__item--tappable">
-            <i class="fa fa-search"></i>
-            <div class="grid-menu-item-label">Search</div>
-          </div>
-         <div class="grid-menu-item list__item--tappable">
+         <div id="divMyCalendar" class="grid-menu-item list__item--tappable">
             <i class="fa fa-calendar"></i>
             <div class="grid-menu-item-label">Calendar</div>
           </div>
           <div id="divMyTasks" class="grid-menu-item list__item--tappable">
             <i class="tab-bar__icon fa fa-2x fa-credit-card"></i>
             <div class="grid-menu-item-label">My Tasks</div>
+          </div>
+           <div onClick="mCircles()" class="grid-menu-item list__item--tappable">
+            <i class="tab-bar__icon fa fa-2x fa-users"></i>
+            <div class="grid-menu-item-label">mCircles</div>
           </div>
         </div>
         <div class="grid-menu-3items-row centering-and-alignment">
@@ -59,23 +54,9 @@
              <i class="fa fa-globe"></i>
             <div class="grid-menu-item-label">Notifications</div>
           </div>
-          <div class="grid-menu-item list__item--tappable">
-            <i class="fa fa-lg fa-comments-o fa-fw"></i>
-            <div class="grid-menu-item-label">Comments</div>
-          </div>
-        </div>
-        <div class="grid-menu-3items-row centering-and-alignment">
-         <div onClick="mCircles()" class="grid-menu-item list__item--tappable">
-            <i class="tab-bar__icon fa fa-2x fa-users"></i>
-            <div class="grid-menu-item-label">mCircles</div>
-          </div>
-          <div class="grid-menu-item list__item--tappable">
+          <div id="divAccount" class="grid-menu-item list__item--tappable">
             <i class="fa fa-user"></i>
             <div class="grid-menu-item-label">Account</div>
-          </div>
-          <div class="grid-menu-item list__item--tappable">
-            <i class="fa fa-cog"></i>
-            <div class="grid-menu-item-label">Setting</div>
           </div>
         </div>
         
@@ -130,7 +111,10 @@
     
     
     
-  
+   <!--- load page Icon here --->
+ 		<div id="loadPage"  style="display:none; top: 50%;position: fixed;left: 50%;">
+      		<span><i class="fa fa-spinner fa-spin" style="font-size:30px;"></i></span>
+   		</div>
     
  
   <script src="js/controllers.js"></script> 

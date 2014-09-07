@@ -25,7 +25,10 @@
         <span onClick="spanSearch()" class="icon-button--quiet navigation-bar__line-height"><i class="fa fa-search"></i></span>
       </div>
     </div>
-    
+    <div id="divSearch" class="margin-little" style="display:none">
+        <input id="filter" type="search" value="" placeholder="keyword..." class="display-block search-input">
+        <span id="filter-count" class="lucent"></span>
+    </div>
     <!------- form create a group here ----->
     <form id="fCreateGroup" style="display:none" class="margin-little">
     	<div class="margin-little">
@@ -49,9 +52,10 @@
     
     
     <!------- Search here ----->
-        <input id="searchUser" name="searchUser" type="search" value="" placeholder="Search all people" class="display-block search-input">
+    
     <!------- Search users here ----->
     <div id="divResultSearchUsers">   <!------- defaul: run,  ----->
+    <input id="searchUser" name="searchUser" type="search" value="" placeholder="Search all people" class="display-block search-input">
         <ul class="list commentlist">
         <script type="text/javascript">
         	var searchUser = JSON.parse(sessionStorage.getItem('searchUsers'));
@@ -78,10 +82,10 @@
     <script type="text/javascript">
 		var group = JSON.parse(sessionStorage.getItem('groups'));
 		for(var i =0; i < group.length; i++){	
-			document.writeln('<li class="list__item list__item--tappable list__item__line-height list-item-container"><div class="list-item-main"><div><span class="list-item-action-left" ><i class="fa fa-users"></i></span></div>');
+			document.writeln('<li class="list__item list__item--tappable list__item__line-height list-item-container" id="'+ group[i].id +'"><div class="list-item-main"><div><span class="list-item-action-left" ><i class="fa fa-users"></i></span></div>');
 			document.writeln('<div onClick="detailGroup(\''+group[i].id+'\')" class="list-item-content"><span class="list-item-name">'+group[i].name+'<br/>');
 			document.writeln('<span class="lucent">'+group[i].description+'</span></span> </div></div>');
-			document.writeln('<div onClick="addUserToGroup(\''+group[i].id+'\'),spanSearchUsers()"><span class="notification-right" ><span class="notification">'+group[i].count +'&nbsp;+</span></span></div> </li>  ');
+			document.writeln('<div onClick="addUserToGroup(\''+group[i].id+'\')"><span class="notification-right" ><span class="notification">'+group[i].count +'&nbsp;+</span></span></div> </li>  ');
 		}
 	 </script>
     </ul>
@@ -118,7 +122,13 @@
         </button>
       </label>
     </div>
+    
+     <!--- load page Icon here --->
+ 		<div id="loadPage"  style="display:none; top: 50%;position: fixed;left: 50%;">
+      		<span><i class="fa fa-spinner fa-spin" style="font-size:30px;"></i></span>
+   		</div>
       <script src="js/app.js"></script>  
       <script src="js/controllers.js"></script>
   </body>
 </html>
+<!----$('#group_id .number').html(i + 1)--->

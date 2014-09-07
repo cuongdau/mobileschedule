@@ -41,7 +41,7 @@
             </div>
             <div class="margin-little">
             <span class="lucent"><i class="fa fa-clock-o"></i>&nbsp; Start Time:</span>
-               <input type="datetime-local" class="text-input--underbar width-full" placeholder="" value="" name="txtTaskStartTime" id="txtTaskStartTime">
+               <input type="datetime-local" class="text-input--underbar width-full" placeholder="" value="" name="txtTaskStartTime" id="txtTaskStartTime"> 
             </div>
             
             <div class="margin-little">
@@ -85,7 +85,11 @@
 					}
 				</script>
 				</select>
-				<select id="selectMember" class="text-input--underbar width-half"></select>                    
+				<select id="selectMember" name="selectMember" class="text-input--underbar width-half">
+                <script>
+                	document.writeln('<option selected value="'+JSON.parse(sessionStorage['user'])[0].user_name+'">'+JSON.parse(sessionStorage['user'])[0].user_name+'</option>');
+               </script>
+			    </select>                    
             </div>
 
             <div class="vspc margin-little">
@@ -125,6 +129,12 @@
         </button>
       </label>
     </div>
+    
+    <!--- load page Icon here --->
+ 		<div id="loadPage"  style="display:none; top: 50%;position: fixed;left: 50%;">
+      		<span><i class="fa fa-spinner fa-spin" style="font-size:30px;"></i></span>
+   		</div>
+        
       <script src="js/controllers.js"></script>
   </body>
 </html>

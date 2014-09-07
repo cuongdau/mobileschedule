@@ -1,0 +1,90 @@
+
+<!DOCTYPE HTML>
+<html>
+  <head>
+  <title>My App</title>  
+   <link rel="stylesheet" href="lib/onsen/css/onsenui.css">  
+  <link rel="stylesheet" href="lib/onsen/css/onsen-css-components.css">  
+  <link rel="stylesheet" href="styles/app.css"/>
+  <link rel="stylesheet" href="css/grid_menu.css"/>
+  <link rel="stylesheet" href="css/mschedule.css" />
+    
+  <script src="lib/onsen/js/angular/angular.js"></script>    
+  <script src="lib/onsen/js/onsenui.js"></script>
+  <script src="js/jquery-1.7.1.min.js"></script>
+  
+
+  </head>
+  <body ontouchstart="" class="page">
+
+    <div class="navigation-bar">
+      <div class="navigation-bar__left">
+        <span class="icon-button--quiet navigation-bar__line-height">My Profile::</span>
+        <span onClick="saveUpdateAccount()" class="icon-button--quiet navigation-bar__line-height"><i class="fa fa-check-circle">&nbsp;Save</i></span>
+        <span onClick="cancelUpdateAccount()" class="icon-button--quiet navigation-bar__line-height"><i class="fa fa-times-circle">&nbsp;Cancel</i></span>
+        </div>
+    </div>
+    
+    <div class="formarea">
+            
+        	<form id="fAccount" method="post">
+            <script>
+            	var user = JSON.parse(sessionStorage['user']);
+				document.writeln('<div style="float:left; margin-right:10px;"><img src="img/user.jpg" width="50" height="50"></div><div></br><span class="list-item-name">'+user[0].user_name+'</span></div></br>');
+				document.writeln('<div class="label-profile"><i class="fa fa-star"></i>&nbsp;Profile</div>');
+				
+				document.writeln('<input hidden="hidden" value="'+user[0].user_name+'" name="txtUserName" id="txtUserName">');
+            	document.writeln('<div><i class="lucent title_left">First Name:</i><input type="text" class="text-input--underbar width-more-half" placeholder="First name" value="'+user[0].first_name+'" name="txtFirstName" id="txtFirstName"></div>');
+				document.writeln(' <div><i class="lucent title_left">Last Name:</i><input type="text" class="text-input--underbar width-more-half" placeholder="Last name" value="'+user[0].last_name+'" name="txtLastName" id="txtLastName"></div>');
+                document.writeln('<div><i class="lucent title_left">MPhone:</i><input type="text" class="text-input--underbar width-more-half" placeholder="Mobile phone number" value="'+user[0].phone_mobile+'" name="txtPhone" id="txtPhone"></div>');
+				
+              document.writeln('<div><i class="lucent title_left">Email:</i><input type="text" class="text-input--underbar width-more-half" placeholder="Mobile phone number" value="'+user[0].email+'" name="txtEmail" id="txtEmail"></div>');
+			  
+			  document.writeln('<div><i class="lucent title_left">Ad_Street:</i><input type="text" class="text-input--underbar width-more-half" placeholder="Mobile phone number" value="'+user[0].address_street+'" name="txtStreet" id="txtStreet"></div>');
+			   document.writeln('<div><i class="lucent title_left">Ad_City:</i><input type="text" class="text-input--underbar width-more-half" placeholder="Mobile phone number" value="'+user[0].address_city+'" name="txtCity" id="txtCity"></div>');
+			   document.writeln('<div><i class="lucent title_left">Ad_Country:</i><input type="text" class="text-input--underbar width-more-half" placeholder="Mobile phone number" value="'+user[0].address_country+'" name="txtCountry" id="txtCountry"></div>');
+			    </script>
+            </form>
+   		</div>
+
+   <div class="tab-bar">
+      <label class="tab-bar__item">
+          <input type="radio" name="tab-bar-b" checked="checked" onclick="window.location.href='home.html'"></input>
+          <button class="tab-bar__button">
+              <i class="tab-bar__icon fa fa-2x fa-home"></i>
+            <div class="tab-bar__label">HOME</div>
+          </button>
+      </label>
+     
+      <label class="tab-bar__item">
+        <input type="radio" name="tab-bar-b"></input>
+        <button class="tab-bar__button">
+          <i class="tab-bar__icon fa fa-comments-o"></i>
+          <div class="tab-bar__label">Comments</div>
+        </button>
+      </label>
+      <label class="tab-bar__item">
+        <input type="radio" name="tab-bar-b"></input>
+        <button class="tab-bar__button">
+          <i class="tab-bar__icon fa fa-star"></i>
+          <div class="tab-bar__label">Assignments</div>
+        </button>
+      </label>
+      <label class="tab-bar__item">
+        <input type="radio" name="tab-bar-b"></input>
+        <button class="tab-bar__button">
+          <i class="tab-bar__icon fa fa-globe"></i>
+          <div class="tab-bar__label">Notifications</div>
+        </button>
+      </label>
+    </div>
+    
+     <!--- load page Icon here --->
+ 		<div id="loadPage"  style="display:none; top: 50%;position: fixed;left: 50%;">
+      		<span><i class="fa fa-spinner fa-spin" style="font-size:30px;"></i></span>
+   		</div>
+      <script src="js/app.js"></script>  
+      <script src="js/controllers.js"></script>
+  </body>
+</html>
+<!----$('#group_id .number').html(i + 1)--->
