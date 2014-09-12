@@ -1,4 +1,3 @@
-
 <!DOCTYPE HTML>
 <html>
   <head>
@@ -8,11 +7,9 @@
   <link rel="stylesheet" href="styles/app.css"/>
   <link rel="stylesheet" href="css/grid_menu.css"/>
   <link rel="stylesheet" href="css/mschedule.css" />
-    
   <script src="lib/onsen/js/angular/angular.js"></script>    
   <script src="lib/onsen/js/onsenui.js"></script>
   <script src="js/jquery-1.7.1.min.js"></script>
-  
 <link href="css/fullcalendar.css" rel="stylesheet" /><!-- Full calendar -->
 <!-- Script -->
 <script src="js/jquery-1.10.2.js"></script><!-- Jquery -->
@@ -43,13 +40,17 @@
 			selectable: false,
 			selectHelper: true,
 			select: function(start, end, allDay) {
-				var title = prompt('Event Title:');
-				if (title) {
+				var Title = prompt('Event Title:');
+				if (Title) {
+					var Start =$.fullCalendar.formatDate(start,"yyyy-MM-dd HH:mm:ss");
+					var End =$.fullCalendar.formatDate(end,"yyyy-MM-dd HH:mm:ss");
+					alert(Title +'___'+ Start +'___'+ End);
+					createTaskFromCalendar(Title,Start,End);
 					calendar.fullCalendar('renderEvent',
 						{
-							title: title,
-							start: start,
-							end: end,
+							title: Title,
+							start: Start,
+							end: End,
 							allDay: allDay
 						},
 						true // make the event "stick"
@@ -59,6 +60,10 @@
 			},
             disableDragging: true,
 			editable: true, // muon thay cho nay = vong for()
+			dayClick: function(date, jsEvent, view) {
+				var cDate =$.fullCalendar.formatDate(date,"yyyy-MM-dd HH:mm:ss");
+				calendarGetTasks(cDate);
+			},
 			events: function(start, end, callback) {
 				var tasks =JSON.parse(sessionStorage['tasks']);
 				var events =[];
@@ -74,9 +79,8 @@
 				}
 				callback(events);
 			},
-			eventClick: function(event) {
-				debugger;
-				alert('ok');
+			eventClick: function(calEvent, jsEvent, view) {
+				taskDetail(calEvent.id);
 			}
 		}
 
@@ -85,9 +89,7 @@
 
 </script>
 
-    <div id='calendar'></div>
-    
-
+    <div id='calendar' style="margin-bottom:50px;"></div>
    <div class="tab-bar">
       <label class="tab-bar__item">
           <input type="radio" name="tab-bar-b" checked="checked" onclick="window.location.href='home.html'"></input>
@@ -107,15 +109,15 @@
       <label class="tab-bar__item">
         <input type="radio" name="tab-bar-b"></input>
         <button class="tab-bar__button">
-          <i class="tab-bar__icon fa fa-star"></i>
-          <div class="tab-bar__label">Assignments</div>
-        </button>
-      </label>
-      <label class="tab-bar__item">
-        <input type="radio" name="tab-bar-b"></input>
-        <button class="tab-bar__button">
           <i class="tab-bar__icon fa fa-globe"></i>
           <div class="tab-bar__label">Notifications</div>
+        </button>
+      </label>
+      <label class="tab-bar__item" onClick="logOut()" >
+        <input type="radio" name="tab-bar-b"></input>
+        <button class="tab-bar__button">
+          <i class="tab-bar__icon fa fa-align-justify"></i>
+          <div class="tab-bar__label">Log Out</div>
         </button>
       </label>
     </div>
